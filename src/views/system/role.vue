@@ -1,6 +1,6 @@
 <template>
-    <div class="system">
-        system
+    <div class="role">
+        role
     </div>
 </template>
 
@@ -8,7 +8,7 @@
 </script>
 
 <style scoped lang="less">
-.system {
+.role {
     // 样式代码
 }
 </style>

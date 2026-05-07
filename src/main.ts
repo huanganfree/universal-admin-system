@@ -1,5 +1,3 @@
-import './assets/main.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'  
 import Antd from 'ant-design-vue';
@@ -10,6 +8,7 @@ import router from './router'
 
 const app = createApp(App)
 
+
 app.use(createPinia()).use(router).use(Antd)
 
-app.mount('#app')
+app.mount('#app') 
