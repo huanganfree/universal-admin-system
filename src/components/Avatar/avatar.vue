@@ -12,7 +12,7 @@
                 </a-menu-item>
                 <a-menu-item>
                     <LogoutOutlined />
-                    <a href="javascript:;" class="marginLeft">退出登录</a>
+                    <a href="javascript:;" class="marginLeft" @click="handleLoginOut">退出登录</a>
                 </a-menu-item>
             </a-menu>
         </template>
@@ -22,6 +22,10 @@
 <script setup lang="ts">
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons-vue';
 
+
+function handleLoginOut() {
+
+}
 </script>
 
 <style scoped lang="less">

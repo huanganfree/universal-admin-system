@@ -1,8 +1,6 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { mockRouters } from './mockRouters'
 import Layout from '@/components/Layout.vue'
-import NotFound from '@/views/notFound/notFound.vue'
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,9 +13,14 @@ const router = createRouter({
       children: mockRouters
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/login/loginView.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: NotFound
+      component: () => import('@/views/notFound/notFound.vue')
     }
   ]
 })
