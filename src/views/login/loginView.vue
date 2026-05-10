@@ -30,6 +30,11 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import Fire from '@/assets/image/fire.svg'
+import { useRouter } from 'vue-router';
+import { handleLogin } from '@/api/login/login';
+import { useAuthStore } from '@/stores/useAuthStore';
+
+const authStore = useAuthStore()
 
 interface FormState {
     username: string;
@@ -37,13 +42,18 @@ interface FormState {
     remember: boolean;
 }
 
+const router = useRouter()
+
 const formState = reactive<FormState>({
     username: '',
     password: '',
     remember: true,
 });
-const onFinish = (values: any) => {
+const onFinish = async (values: any) => {
     console.log('Success:', values);
+    const res = await handleLogin(values)
+    authStore.getToken(res)
+    router.push('/')
 };
 
 const onFinishFailed = (errorInfo: any) => {

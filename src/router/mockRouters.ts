@@ -11,7 +11,7 @@ export const mockRouters = [
         path: '/system/role',
         name: 'role',
         meta: { icon: UserOutlined, title: '角色管理' },
-        component: () => import('@/views/system/role.vue')
+        component: () => import('@/views/system/role/role.vue')
       },
       {
         path: '/system/menu',

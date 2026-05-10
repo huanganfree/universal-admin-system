@@ -10,9 +10,7 @@
                     <a-breadcrumb-item v-for="item in breadcrumbData" :key="item.path">{{ item.meta.title
                     }}</a-breadcrumb-item>
                 </a-breadcrumb>
-                <a-space>
-                    <Avatar />
-                </a-space>
+                <Avatar />
             </a-layout-header>
             <a-layout-content class="global-layout-content">
                 <router-view />
@@ -24,7 +22,7 @@
 import { ref } from 'vue';
 import CustomMenu from './CustomMenu/CustomMenu.vue';
 import { RouterView } from 'vue-router';
-import Avatar from './Avatar/avatar.vue';
+import Avatar from './Avatar/Avatar.vue';
 
 const breadcrumbData = ref<{ [key: string]: any }>([])
 const collapsed = ref<boolean>(false);
@@ -57,6 +55,5 @@ function handleBread(params: any) {
     // background: #fff;
     height: 100%;
     overflow: auto;
-    border-radius: 8px;
 }
 </style>

@@ -19,8 +19,4 @@ const props = withDefaults(defineProps<{ item: { [key: string]: any } }>(), {
 })
 </script>
 
-<style scoped lang="less">
-.subMenu {
-    // 样式代码
-}
-</style>
+<style scoped lang="less"></style>

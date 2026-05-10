@@ -1,14 +1,17 @@
 <template>
     <a-dropdown>
         <a-space style="cursor: pointer;">
-            <a-avatar :size="30">USER</a-avatar>
-            <span>用户</span>
+            <a-avatar :size="33" src="">
+                <template #icon>
+                    <UserOutlined />
+                </template></a-avatar>
+            <span>小帅&nbsp;(超级管理员)</span>
         </a-space>
         <template #overlay>
             <a-menu>
                 <a-menu-item>
                     <UserOutlined />
-                    <a href="javascript:;" class="marginLeft">个人中心</a>
+                    <a href="javascript:;" class="marginLeft">账号设置</a>
                 </a-menu-item>
                 <a-menu-item>
                     <LogoutOutlined />
@@ -21,10 +24,11 @@
 
 <script setup lang="ts">
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons-vue';
+import { useRouter } from 'vue-router';
 
-
+const router = useRouter()
 function handleLoginOut() {
-
+    router.push('/login')
 }
 </script>
 
