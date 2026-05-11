@@ -17,7 +17,7 @@ service.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
-// 添加响应拦截器, 响应返回的res是浏览器给的
+// 添加响应拦截器, 响应返回的res是浏览器给的；成功分支返回的是业务 data，与 AxiosResponse 不同
 service.interceptors.response.use(function (response) {
     console.log('then-response==', response);
     const { code, data, msg } = response.data || {}
@@ -50,15 +50,16 @@ service.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 
+/** 与响应拦截器一致：resolve 值为后端包里的 data 字段，而非 AxiosResponse */
 const request = {
-    get: async ({ url, params }: { url: string, params?: { [key: string]: any } }) => {
-        return service.get(url, { params })
+    get: async <T = unknown>({ url, params }: { url: string; params?: { [key: string]: any } }): Promise<T> => {
+        return service.get(url, { params }) as Promise<T>
     },
-    post: async ({ url, data, config }: { url: string, data: { [key: string]: any }, config?: any }) => {
-        return service.post(url, data, config)
+    post: async <T = unknown>({ url, data, config }: { url: string; data: { [key: string]: any }; config?: any }): Promise<T> => {
+        return service.post(url, data, config) as Promise<T>
     },
-    put: async ({ url, data }: { url: string, data: { [key: string]: any } }) => {
-        return service.put(url, data)
+    put: async <T = unknown>({ url, data }: { url: string; data: { [key: string]: any } }): Promise<T> => {
+        return service.put(url, data) as Promise<T>
     }
 }
 

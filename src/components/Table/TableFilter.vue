@@ -8,19 +8,28 @@
                         :allowClear="typeof item.componentProps?.allowClear == 'boolean' ? item.componentProps.allowClear : true" />
                 </a-form-item>
             </a-col>
+            <a-col :span="6">
+                <a-form-item>
+                    <a-space>
+                        <a-button type="primary" @click="emit('search')">查询</a-button>
+                        <a-button>重置</a-button>
+                    </a-space>
+                </a-form-item>
+            </a-col>
         </a-row>
     </a-form>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { DownOutlined, UpOutlined } from "@ant-design/icons-vue";
 
 const formState = defineModel<any>({
     type: Object as () => any,
     default: () => {
     }
 });
+
+const emit = defineEmits(['search'])
 
 const { columns, collapsed } = defineProps({
     columns: {
@@ -33,18 +42,7 @@ const { columns, collapsed } = defineProps({
     }
 })
 
-const expand = ref<boolean>(false)
-
 const visibleColumns = ref([...columns])
-
-watch(() => expand.value, val => {
-    if (expand.value) {
-        visibleColumns.value = columns;
-        return
-    }
-    visibleColumns.value = columns.slice(0, 3);
-}, { immediate: true })
-
 
 onMounted(async () => {
     for (const item of visibleColumns.value) {
@@ -57,17 +55,6 @@ onMounted(async () => {
     }
 })
 
-const dynamicGrids = computed(() => {
-    if (!collapsed) {
-        return (4 - columns.length % 4) * 6
-    }
-    return expand.value ? (4 - columns.length % 4) * 6 : 6;
-})
-
-
-const toggleExpand = () => {
-    expand.value = !expand.value;
-};
 </script>
 
 <style scoped>
