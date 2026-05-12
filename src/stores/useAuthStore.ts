@@ -1,3 +1,4 @@
+import router from '@/router'
 import { defineStore } from 'pinia'
 
 export interface AuthState {
@@ -19,6 +20,7 @@ export const useAuthStore = defineStore('auth', {
     deleteToken() {
       this.accessToken = null
       localStorage.removeItem('accessToken')
+      router.push('/login')
     }
   }
 })

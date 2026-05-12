@@ -12,7 +12,7 @@
                 <a-form-item>
                     <a-space>
                         <a-button type="primary" @click="emit('search')">查询</a-button>
-                        <a-button>重置</a-button>
+                        <a-button @click="emit('reset')">重置</a-button>
                     </a-space>
                 </a-form-item>
             </a-col>
@@ -29,7 +29,7 @@ const formState = defineModel<any>({
     }
 });
 
-const emit = defineEmits(['search'])
+const emit = defineEmits(['search', 'reset'])
 
 const { columns, collapsed } = defineProps({
     columns: {
