@@ -45,7 +45,14 @@ service.interceptors.response.use(function (response) {
             content: msg || 'token失效，请重新登录',
         });
         router.replace('/login')
+        setTimeout(() => {
+            window.location.reload()
+        }, 300)
         return
+    } else {
+        message.error({
+            content: `502, ${error.response.statusText}`,
+        });
     }
     return Promise.reject(error);
 });
@@ -58,8 +65,11 @@ const request = {
     post: async <T = unknown>({ url, data, config }: { url: string; data: { [key: string]: any }; config?: any }): Promise<T> => {
         return service.post(url, data, config) as Promise<T>
     },
-    put: async <T = unknown>({ url, data }: { url: string; data: { [key: string]: any } }): Promise<T> => {
+    put: async <T = unknown>({ url, data }: { url: string; data?: { [key: string]: any } }): Promise<T> => {
         return service.put(url, data) as Promise<T>
+    },
+    delete: async <T = unknown>({ url, data }: { url: string; data: (string | number)[] }): Promise<T> => {
+        return service.delete(url, { data }) as Promise<T>
     }
 }
 

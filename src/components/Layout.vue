@@ -50,8 +50,8 @@ function handleBread(params: any) {
 }
 
 .global-layout-content {
-    margin: 16px;
-    // padding: 16px;
+    margin: 16px 0 16px 16px;
+    padding-right: 16px;
     // background: #fff;
     height: 100%;
     overflow: auto;

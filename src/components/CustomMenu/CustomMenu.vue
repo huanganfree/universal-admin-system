@@ -19,8 +19,8 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute()
 const router = useRouter()
-const selectedKeys = ref<string[]>(['/system/role'])
-const openKeys = ref(['/system'])
+const selectedKeys = ref<string[]>(['/user/userList'])
+const openKeys = ref(['/user'])
 const menuData = ref(mockRouters)
 const emit = defineEmits(['breadcrumb-change'])
 

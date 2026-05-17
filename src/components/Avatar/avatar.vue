@@ -25,10 +25,8 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/useAuthStore';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons-vue';
-import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore()
-// const router = useRouter()
 function handleLoginOut() {
     authStore.deleteToken()
 }
