@@ -16,7 +16,7 @@
                 <a-table :columns="columns"
                     :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: handleSelectChange, getCheckboxProps }"
                     :data-source="tableData" :rowKey="'id'" :loading="loading" :pagination="pagination"
-                    @change="handlePageChange">
+                    @change="handlePageChange" :scroll="{ x: 1400 }">
                     <template #bodyCell="{ column, record }">
                         <template v-if="column.dataIndex === 'status'">
                             <a-switch v-model:checked="record.status" :checkedValue="1" :unCheckedValue="0"
@@ -99,8 +99,19 @@ const columns = [
         dataIndex: 'status'
     },
     {
+        title: '创建时间',
+        dataIndex: 'createdAt',
+        width: 160
+    },
+    {
+        title: '修改时间',
+        dataIndex: 'updatedAt',
+        width: 160
+    },
+    {
         title: '操作',
-        dataIndex: 'operations'
+        dataIndex: 'operations',
+        fixed: 'right'
     }
 ]
 

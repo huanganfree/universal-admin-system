@@ -18,6 +18,7 @@ export default defineConfig({
     },
   },
   server: {
+    port: 9000,
     proxy: {
       '/auth-api': {
         target: "http://localhost:8001",
