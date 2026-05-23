@@ -6,7 +6,7 @@
         <a-card :bordered="false">
             <a-flex :gap="10" vertical>
                 <a-space>
-                    <AddRole @ok="handleSearch" :role-dict-item="roleDictItem" />
+                    <AddUser @ok="handleSearch" :role-dict-item="roleDictItem" />
                     <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
                         @confirm="() => handleConfirmDelete(selectedRowKeys, deleteRoles)"
                         :disabled="!selectedRowKeys.length">
@@ -26,7 +26,7 @@
                         </template>
                         <template v-if="column.dataIndex === 'operations'">
                             <a-flex>
-                                <AddRole @ok="handleSearch" :outFormData="record" :role-dict-item="roleDictItem" />
+                                <AddUser @ok="handleSearch" :outFormData="record" :role-dict-item="roleDictItem" />
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
                                     @confirm="() => handleConfirmDelete([record.id], deleteRoles)"
                                     :disabled="record.status">
@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import TableFilter from '@/components/Table/TableFilter.vue';
 import { ref } from 'vue';
-import AddRole from './config/addRole.vue';
+import AddUser from './config/addUser.vue';
 import { useTableSearch } from '@/composables/useTableSearch';
 import { getDictItemByDictCode } from '@/api/system/role';
 import { deleteRoles } from "@/api/system/role";
@@ -76,6 +76,11 @@ const queryColumns = ref([
         title: "用户名",
         key: "username",
         component: "a-input"
+    },
+    {
+        title: "状态",
+        key: "status",
+        component: "a-select"
     }
 ])
 const columns = [
@@ -84,12 +89,12 @@ const columns = [
         dataIndex: 'username'
     },
     {
-        title: '用户昵称',
+        title: '昵称',
         dataIndex: 'nickname'
     },
     {
         title: '角色',
-        dataIndex: 'roleCode',
+        dataIndex: 'roleName',
         ellipsis: true
     },
     {
@@ -98,7 +103,18 @@ const columns = [
     },
     {
         title: '最近登录时间',
-        dataIndex: 'lastLoginTime'
+        dataIndex: 'lastLoginTime',
+        width: 160
+    },
+    {
+        title: '创建时间',
+        dataIndex: 'createdAt',
+        width: 160
+    },
+    {
+        title: '修改时间',
+        dataIndex: 'updatedAt',
+        width: 160
     },
     {
         title: '操作',

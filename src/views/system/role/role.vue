@@ -78,6 +78,23 @@ const queryColumns = ref([
         title: "角色名称",
         key: "roleName",
         component: "a-input"
+    },
+    {
+        title: "状态",
+        key: "status",
+        component: "a-select",
+        componentProps: {
+            options: [
+                {
+                    label: '启用',
+                    value: 1
+                },
+                {
+                    label: '禁用',
+                    value: 0
+                }
+            ]
+        }
     }
 ])
 const columns = [

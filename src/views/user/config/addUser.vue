@@ -7,19 +7,19 @@
             <a-form :model="formState" ref="formRef" :rules="rules" layout="vertical">
                 <a-row :gutter="16">
                     <a-col :span="24">
-                        <a-form-item label="角色名称" name="roleName">
-                            <a-input v-model:value="formState.roleName" placeholder="" />
+                        <a-form-item label="用户名" name="username">
+                            <a-input v-model:value="formState.username" placeholder="" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="24">
-                        <a-form-item label="角色标识" name="roleCode">
-                            <a-select v-model:value="formState.roleCode" placeholder="" :options="roleDictItem"
+                        <a-form-item label="昵称" name="nickname">
+                            <a-input v-model:value="formState.nickname" placeholder="" />
+                        </a-form-item>
+                    </a-col>
+                    <a-col :span="24">
+                        <a-form-item label="角色" name="roleId">
+                            <a-select v-model:value="formState.roleId" placeholder="" :options="roleDictItem"
                                 allow-clear />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="24">
-                        <a-form-item label="角色描述" name="description">
-                            <a-textarea v-model:value="formState.description" placeholder="" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import { addRole, editRole, getDictItemByDictCode } from '@/api/system/role';
 import { message, type FormInstance } from 'ant-design-vue';
 import { ref, watch } from 'vue';
 
@@ -44,25 +43,25 @@ const props = withDefaults(
         outFormData?: { [key: string]: unknown }, // 或你真实的角色类型
         roleDictItem?: { [key: string]: unknown }[]
     }>(),
-    { outFormData: () => ({ roleName: '', roleCode: undefined, description: '' }) }
+    { outFormData: () => ({ username: '', roleId: undefined, description: '' }) }
 )
 
 const rules: {} = {
-    roleName: [
+    username: [
         { required: true, message: '请输入' }
     ],
-    roleCode: [
+    roleId: [
         { required: true, message: '请选择' }
     ],
-    description: [
-        { required: false, message: '请输入' }
+    nickname: [
+        { required: true, message: '请输入' }
     ]
 }
 const emit = defineEmits(['ok'])
 const formState = ref<{ [key: string]: any }>({
-    roleName: '',
-    roleCode: undefined,
-    description: ''
+    username: '',
+    roleId: undefined,
+    nickname: ''
 })
 
 watch(() => props.outFormData, () => {
@@ -82,15 +81,15 @@ function handleVisible(show: boolean) {
 }
 async function handleSubmit() {
     await formRef.value!.validate()
-    if (!formState.value.id) {
-        await addRole(formState.value as { roleName: string, roleCode: string, description?: string })
-        message.success('新增成功！')
-    } else {
-        await editRole(formState.value)
-        message.success('编辑成功！')
-    }
-    emit('ok')
-    handleVisible(false)
+    // if (!formState.value.id) {
+    //     await addRole(formState.value as { username: string, roleId: string, description?: string })
+    //     message.success('新增成功！')
+    // } else {
+    //     await editRole(formState.value)
+    //     message.success('编辑成功！')
+    // }
+    // emit('ok')
+    // handleVisible(false)
 }
 
 

@@ -3,8 +3,8 @@
         <a-row :gutter="20">
             <a-col :span="6" v-for="(item, index) in visibleColumns" :key="index">
                 <a-form-item :key="item.key" :label="item.title" :name="item.key">
-                    <component :is="item.component" v-on="item.events || {}"
-                        v-bind="item.props || item.componentProps || {}" v-model:value="formState[item.key]"
+                    <component :is="item.component" v-on="item.events || {}" v-bind="item.componentProps || {}"
+                        v-model:value="formState[item.key]"
                         :allowClear="typeof item.componentProps?.allowClear == 'boolean' ? item.componentProps.allowClear : true" />
                 </a-form-item>
             </a-col>
