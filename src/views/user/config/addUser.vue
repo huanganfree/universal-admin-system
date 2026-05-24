@@ -18,8 +18,8 @@
                     </a-col>
                     <a-col :span="24">
                         <a-form-item label="角色" name="roleId">
-                            <a-select v-model:value="formState.roleId" placeholder="" :options="roleDictItem"
-                                allow-clear />
+                            <a-select v-model:value="formState.roleId" placeholder="" :options="roleOptions" allow-clear
+                                :field-names="{ label: 'roleName', value: 'id' }" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -35,15 +35,16 @@
 </template>
 
 <script setup lang="ts">
+import { fetchAddUser, fetchEditUser } from '@/api/system/user';
 import { message, type FormInstance } from 'ant-design-vue';
 import { ref, watch } from 'vue';
 
 const props = withDefaults(
     defineProps<{
         outFormData?: { [key: string]: unknown }, // 或你真实的角色类型
-        roleDictItem?: { [key: string]: unknown }[]
+        roleOptions?: { [key: string]: unknown }[]
     }>(),
-    { outFormData: () => ({ username: '', roleId: undefined, description: '' }) }
+    { outFormData: () => ({ username: '', roleId: '', nickname: '' }) }
 )
 
 const rules: {} = {
@@ -58,7 +59,7 @@ const rules: {} = {
     ]
 }
 const emit = defineEmits(['ok'])
-const formState = ref<{ [key: string]: any }>({
+const formState = ref<{ username: string, roleId: number | undefined, nickname: string, id?: number }>({
     username: '',
     roleId: undefined,
     nickname: ''
@@ -81,15 +82,15 @@ function handleVisible(show: boolean) {
 }
 async function handleSubmit() {
     await formRef.value!.validate()
-    // if (!formState.value.id) {
-    //     await addRole(formState.value as { username: string, roleId: string, description?: string })
-    //     message.success('新增成功！')
-    // } else {
-    //     await editRole(formState.value)
-    //     message.success('编辑成功！')
-    // }
-    // emit('ok')
-    // handleVisible(false)
+    if (!formState.value.id) {
+        await fetchAddUser(formState.value)
+        message.success('新增成功！')
+    } else {
+        await fetchEditUser(formState.value)
+        message.success('编辑成功！')
+    }
+    emit('ok')
+    handleVisible(false)
 }
 
 

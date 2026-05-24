@@ -1,6 +1,26 @@
-import { AppstoreOutlined, SafetyOutlined, SettingOutlined, ToolOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { AppstoreOutlined, BookOutlined, ContainerOutlined, FileAddOutlined, SafetyOutlined, SettingOutlined, ToolOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 export const mockRouters = [
+  {
+    path: '/content',
+    name: 'content',
+    redirect: '/content/allContent',
+    meta: { icon: BookOutlined, title: '内容管理' },
+    children: [
+      {
+        path: '/content/allContent',
+        name: 'allContent',
+        meta: { icon: ContainerOutlined, title: '全部内容' },
+        component: () => import('@/views/content/allContent/allContent.vue')
+      },
+      {
+        path: '/content/createContent',
+        name: 'createContent',
+        meta: { icon: FileAddOutlined, title: '创建内容' },
+        component: () => import('@/views/content/createContent/createContent.vue')
+      },
+    ]
+  },
   {
     path: '/user',
     name: 'user',

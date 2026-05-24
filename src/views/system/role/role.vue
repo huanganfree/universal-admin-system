@@ -22,7 +22,7 @@
                             <a-switch v-model:checked="record.status" :checkedValue="1" :unCheckedValue="0"
                                 checked-children="启用" un-checked-children="禁用"
                                 :disabled="record.roleCode == 'super_admin'"
-                                @change="(value: number) => handleStatusChange(value, record)" />
+                                @change="(value: number) => handleStatusChange(value, record, changeRoleStatus)" />
                         </template>
                         <template v-if="column.dataIndex === 'operations'">
                             <a-flex>
@@ -47,7 +47,7 @@ import TableFilter from '@/components/Table/TableFilter.vue';
 import { ref } from 'vue';
 import AddRole from './config/addRole.vue';
 import { useTableSearch } from '@/composables/useTableSearch';
-import { getDictItemByDictCode } from '@/api/system/role';
+import { changeRoleStatus, getDictItemByDictCode } from '@/api/system/role';
 import { deleteRoles } from "@/api/system/role";
 import AuthConfig from './config/authConfig.vue';
 

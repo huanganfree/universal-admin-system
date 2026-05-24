@@ -11,8 +11,8 @@ export async function getDictItemByDictCode({ dictCode }: { dictCode: string }) 
     return request.get<{ [key: string]: unknown }[]>({ url: `${prefix}/dictItems`, params: { dictCode } })
 }
 
-export async function getRoleList({ page, pageSize, roleName }: { page: number, pageSize: number, roleName?: string }) {
-    return request.get<PageRes>({ url: `${prefix}/roles/search`, params: { page, pageSize, roleName } })
+export async function fetchGetRoleList({ page, pageSize, roleName, status }: { page: number, pageSize: number, roleName?: string, status?: number }) {
+    return request.get<PageRes>({ url: `${prefix}/roles/search`, params: { page, pageSize, roleName, status } })
 }
 
 export async function addRole({ description, roleCode, roleName }: { roleName: string, roleCode: string, description?: string }) {

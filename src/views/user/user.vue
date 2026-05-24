@@ -6,7 +6,7 @@
         <a-card :bordered="false">
             <a-flex :gap="10" vertical>
                 <a-space>
-                    <AddUser @ok="handleSearch" :role-dict-item="roleDictItem" />
+                    <AddUser @ok="handleSearch" :role-options="roleOptions" />
                     <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
                         @confirm="() => handleConfirmDelete(selectedRowKeys, deleteRoles)"
                         :disabled="!selectedRowKeys.length">
@@ -22,13 +22,13 @@
                             <a-switch v-model:checked="record.status" :checkedValue="1" :unCheckedValue="0"
                                 checked-children="启用" un-checked-children="禁用"
                                 :disabled="record.roleCode == 'super_admin'"
-                                @change="(value: number) => handleStatusChange(value, record)" />
+                                @change="(value: number) => handleStatusChange(value, record, fetchUserStatus)" />
                         </template>
                         <template v-if="column.dataIndex === 'operations'">
                             <a-flex>
-                                <AddUser @ok="handleSearch" :outFormData="record" :role-dict-item="roleDictItem" />
+                                <AddUser @ok="handleSearch" :outFormData="record" :role-options="roleOptions" />
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
-                                    @confirm="() => handleConfirmDelete([record.id], deleteRoles)"
+                                    @confirm="() => handleConfirmDelete([record.id], deleteUser)"
                                     :disabled="record.status">
                                     <a-button danger type="link" :disabled="record.status">删除</a-button>
                                 </a-popconfirm>
@@ -46,8 +46,9 @@ import TableFilter from '@/components/Table/TableFilter.vue';
 import { ref } from 'vue';
 import AddUser from './config/addUser.vue';
 import { useTableSearch } from '@/composables/useTableSearch';
-import { getDictItemByDictCode } from '@/api/system/role';
+import { fetchGetRoleList, getDictItemByDictCode } from '@/api/system/role';
 import { deleteRoles } from "@/api/system/role";
+import { deleteUser, fetchUserStatus } from '@/api/system/user';
 
 const {
     tableData,
@@ -63,7 +64,7 @@ const {
     handleStatusChange
 } = useTableSearch({ url: `${import.meta.env.VITE_API_SYSTEM_URL}/users/search` })
 
-const roleDictItem = ref<any[]>([])
+const roleOptions = ref<any[]>([])
 
 function getCheckboxProps(record: { [key: string]: any }) {
     return {
@@ -80,7 +81,19 @@ const queryColumns = ref([
     {
         title: "状态",
         key: "status",
-        component: "a-select"
+        component: "a-select",
+        componentProps: {
+            options: [
+                {
+                    label: '启用',
+                    value: 1
+                },
+                {
+                    label: '禁用',
+                    value: 0
+                }
+            ]
+        }
     }
 ])
 const columns = [
@@ -122,13 +135,10 @@ const columns = [
     }
 ]
 
-getDictItemsByRole()
-async function getDictItemsByRole() {
-    const res = await getDictItemByDictCode({ dictCode: 'role_code' })
-    roleDictItem.value = res.map((item: any) => ({
-        label: `${item.item_value}(${item.item_text})`,
-        value: item.item_value
-    }))
+getAllRoles()
+async function getAllRoles() {
+    const { records = [] } = await fetchGetRoleList({ page: 1, pageSize: 100, status: 1 })
+    roleOptions.value = records
 }
 
 </script>

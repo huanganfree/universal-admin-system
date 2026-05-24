@@ -1,5 +1,4 @@
 
-import { changeRoleStatus } from "@/api/system/role";
 import request from "@/axios/axios";
 import { message } from "ant-design-vue";
 import { onBeforeMount, ref, watch, type UnwrapRef } from "vue";
@@ -77,8 +76,9 @@ export function useTableSearch({ url = '' }: InitSearchParams) {
         handleSearch()
     }
 
-    async function handleStatusChange(status: number, record: any) {
-        await changeRoleStatus(record.id, status)
+    async function handleStatusChange(status: number, record: any, func: (id: number, status: number) => Promise<any>) {
+        // await changeRoleStatus(record.id, status)
+        await func(record.id, status)
         message.success('操作成功！');
         handleSearch()
     }
