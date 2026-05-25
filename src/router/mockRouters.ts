@@ -1,4 +1,4 @@
-import { AppstoreOutlined, BookOutlined, ContainerOutlined, FileAddOutlined, SafetyOutlined, SettingOutlined, ToolOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { AppstoreOutlined, BookOutlined, ContainerOutlined, FileAddOutlined, FileSearchOutlined, SafetyOutlined, SettingOutlined, ToolOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 export const mockRouters = [
   {
@@ -19,6 +19,12 @@ export const mockRouters = [
         meta: { icon: FileAddOutlined, title: '创建内容' },
         component: () => import('@/views/content/createContent/createContent.vue')
       },
+      {
+        path: '/content/pendingReview',
+        name: 'pendingReview',
+        meta: { icon: FileSearchOutlined, title: '待审核' },
+        component: () => import('@/views/content/pendingReview/pendingReview.vue')
+      }
     ]
   },
   {
