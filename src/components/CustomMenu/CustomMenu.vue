@@ -1,6 +1,6 @@
 <template>
-    <a-menu v-model:selectedKeys="selectedKeys" v-model:openKeys="openKeys" theme="dark" mode="inline"
-        class="global-menu" @select="handleMenuSelect">
+    <a-menu v-model:selectedKeys="selectedKeys" :openKeys="openKeys" theme="dark" mode="inline" class="global-menu"
+        @select="handleMenuSelect" @openChange="handleOpen">
         <template v-for="item in menuData">
             <a-menu-item :key="item.path" v-if="!item.children?.length" :title="item.meta.title"
                 :icon="() => h(item.meta.icon)">
@@ -35,6 +35,10 @@ function initData() {
 
 function handleMenuSelect({ key }: { key: string }) {
     router.push(key)
+}
+
+function handleOpen(open: any) {
+    openKeys.value = [open[open.length - 1]]
 }
 
 </script>

@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <div class="markdownEditor" ref="markdownEditorRef" />
-    </div>
+    <div class="markdownEditor" ref="markdownEditorRef" />
 </template>
 
 <script setup lang="ts">
@@ -22,7 +20,7 @@ const content = defineModel('content', { default: '' })
 
 const markdownEditorRef = ref<HTMLDivElement | null>(null)
 
-watch(() => content.value, val => {
+watch(() => content.value, () => {
     if (content.value) {
         initVditor()
     }

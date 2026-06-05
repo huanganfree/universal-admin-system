@@ -5,7 +5,7 @@
                 <template #icon>
                     <UserOutlined />
                 </template></a-avatar>
-            <span>小帅&nbsp;(超级管理员)</span>
+            <span>{{ authStore.userInfo.username }}&nbsp;({{ authStore.userInfo.roleName }})</span>
         </a-space>
         <template #overlay>
             <a-menu>

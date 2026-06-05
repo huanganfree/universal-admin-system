@@ -12,6 +12,11 @@
                         </a-form-item>
                     </a-col>
                     <a-col :span="24">
+                        <a-form-item label="手机号" name="phone">
+                            <a-input v-model:value="formState.phone" placeholder="" />
+                        </a-form-item>
+                    </a-col>
+                    <a-col :span="24">
                         <a-form-item label="昵称" name="nickname">
                             <a-input v-model:value="formState.nickname" placeholder="" />
                         </a-form-item>
@@ -44,7 +49,7 @@ const props = withDefaults(
         outFormData?: { [key: string]: unknown }, // 或你真实的角色类型
         roleOptions?: { [key: string]: unknown }[]
     }>(),
-    { outFormData: () => ({ username: '', roleId: '', nickname: '' }) }
+    { outFormData: () => ({ username: '', roleId: '', nickname: '', phone: '' }) }
 )
 
 const rules: {} = {
@@ -56,13 +61,17 @@ const rules: {} = {
     ],
     nickname: [
         { required: true, message: '请输入' }
+    ],
+    phone: [
+        { required: true, message: '请输入' }
     ]
 }
 const emit = defineEmits(['ok'])
-const formState = ref<{ username: string, roleId: number | undefined, nickname: string, id?: number }>({
+const formState = ref<{ username: string, roleId: number | undefined, nickname: string, id?: number, phone: string }>({
     username: '',
     roleId: undefined,
-    nickname: ''
+    nickname: '',
+    phone: ''
 })
 
 watch(() => props.outFormData, () => {

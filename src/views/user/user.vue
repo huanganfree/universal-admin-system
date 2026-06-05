@@ -79,6 +79,14 @@ const queryColumns = ref([
         component: "a-input"
     },
     {
+        title: "手机号",
+        key: "phone",
+        component: "a-input",
+        componentProps: {
+            maxlength: 11
+        }
+    },
+    {
         title: "状态",
         key: "status",
         component: "a-select",
@@ -100,6 +108,10 @@ const columns = [
     {
         title: '用户名',
         dataIndex: 'username'
+    },
+    {
+        title: '手机号',
+        dataIndex: 'phone'
     },
     {
         title: '昵称',

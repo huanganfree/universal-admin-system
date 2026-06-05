@@ -5,8 +5,8 @@
             <div class="login-title">UNIVADMIN</div>
         </div>
         <a-form :model="formState" class="form-wrapper" autocomplete="off" @finish="onFinish">
-            <a-form-item name="username" :rules="[{ required: true, message: '请输入账号！' }]">
-                <a-input v-model:value="formState.username" size="large" placeholder="输入账号" allow-clear>
+            <a-form-item name="phone" :rules="[{ required: true, message: '请输入手机号！' }]">
+                <a-input v-model:value="formState.phone" size="large" placeholder="输入手机号" allow-clear :maxlength="11">
                     <template #prefix>
                         <user-outlined />
                     </template>
@@ -37,7 +37,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 const authStore = useAuthStore()
 
 interface FormState {
-    username: string;
+    phone: string;
     password: string;
     remember: boolean;
 }
@@ -45,7 +45,7 @@ interface FormState {
 const router = useRouter()
 
 const formState = reactive<FormState>({
-    username: '',
+    phone: '',
     password: '',
     remember: true,
 });

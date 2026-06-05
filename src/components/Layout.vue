@@ -8,7 +8,7 @@
             <a-layout-header class="global-layout-header">
                 <a-breadcrumb>
                     <a-breadcrumb-item v-for="item in breadcrumbData" :key="item.path">{{ item.meta.title
-                    }}</a-breadcrumb-item>
+                        }}</a-breadcrumb-item>
                 </a-breadcrumb>
                 <Avatar />
             </a-layout-header>
@@ -19,13 +19,18 @@
     </a-layout>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import CustomMenu from './CustomMenu/CustomMenu.vue';
 import { RouterView } from 'vue-router';
 import Avatar from './Avatar/Avatar.vue';
+import { useAuthStore } from '@/stores/useAuthStore.ts';
 
 const breadcrumbData = ref<{ [key: string]: any }>([])
 const collapsed = ref<boolean>(false);
+
+onMounted(() => {
+    useAuthStore().getUserInfo()
+})
 
 function handleBread(params: any) {
     breadcrumbData.value = params.slice(1)

@@ -4,7 +4,7 @@
             <a-flex justify="space-between" align="center">
                 <h3 style="margin: 0;">创建内容</h3>
                 <a-space class="btns">
-                    <a-button type="primary">保存草稿</a-button>
+                    <a-button type="primary" @click="handleSaveDraft">保存草稿</a-button>
                     <a-button type="primary">提交审核</a-button>
                 </a-space>
             </a-flex>
@@ -19,17 +19,18 @@
                     </a-col>
                     <a-col :span="24">
                         <a-form-item label="标签" name="tags">
-                            <a-select v-model:value="formState.tags" placeholder="" :options="[]" allow-clear />
+                            <a-select v-model:value="formState.tags" placeholder=""
+                                :options="[{ label: '医学', value: '医学' }]" allow-clear mode="multiple" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="24">
                         <a-form-item label="封面图" name="coverImage">
-
+                            <upload-file v-model:fileList="formState.coverImage" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="24">
                         <a-form-item label="内容" name="content">
-                            <markdown-editor />
+                            <markdown-editor v-model="formState.content" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -40,9 +41,13 @@
 </template>
 
 <script setup lang="ts">
+import { fetchCreateContent } from '@/api/content/content';
 import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor.vue';
-import { ref } from 'vue';
+import UploadFile from '@/components/Upload/UploadFile.vue';
+import { message } from 'ant-design-vue';
+import { ref, watch } from 'vue';
 
+const formRef = ref<import('ant-design-vue').FormInstance | null>(null)
 const rules = {
     tags: [
         { required: true, message: '请选择' }
@@ -61,10 +66,21 @@ const rules = {
 const formState = ref({
     tags: [],
     title: '',
-    coverImage: '',
+    coverImage: [],
     content: ''
 
 })
+
+async function handleSaveDraft() {
+    await formRef.value!.validate()
+    await fetchCreateContent({
+        ...formState.value,
+        tags: formState.value.tags,
+        cover: formState.value.coverImage,
+        status: 'draft'
+    })
+    message.success('保存草稿成功！')
+}
 </script>
 
 <style scoped lang="less"></style>
