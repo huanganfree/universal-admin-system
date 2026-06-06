@@ -19,7 +19,7 @@
                     @change="handlePageChange">
                     <template #bodyCell="{ column, record }">
                         <template v-if="column.dataIndex === 'status'">
-                            <a-switch v-model:checked="record.status" :checkedValue="1" :unCheckedValue="0"
+                            <a-switch v-model:checked="record.status" :checkedValue="true" :unCheckedValue="false"
                                 checked-children="启用" un-checked-children="禁用"
                                 :disabled="record.roleCode == 'super_admin'"
                                 @change="(value: number) => handleStatusChange(value, record, fetchUserStatus)" />

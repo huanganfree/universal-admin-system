@@ -2,7 +2,7 @@
     <a-flex vertical gap="10">
         <a-card>
             <a-flex justify="space-between" align="center">
-                <h3 style="margin: 0;">创建内容</h3>
+                <h3 style="margin: 0;">创建/编辑内容</h3>
                 <a-space class="btns">
                     <a-button type="primary" @click="handleSaveDraft">保存草稿</a-button>
                     <a-button type="primary">提交审核</a-button>
@@ -46,7 +46,9 @@ import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor.vue';
 import UploadFile from '@/components/Upload/UploadFile.vue';
 import { message } from 'ant-design-vue';
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const formRef = ref<import('ant-design-vue').FormInstance | null>(null)
 const rules = {
     tags: [
@@ -73,13 +75,14 @@ const formState = ref({
 
 async function handleSaveDraft() {
     await formRef.value!.validate()
+    const { coverImage, ...leftProps } = formState.value
     await fetchCreateContent({
-        ...formState.value,
-        tags: formState.value.tags,
-        cover: formState.value.coverImage,
+        ...leftProps,
+        cover: coverImage,
         status: 'draft'
     })
     message.success('保存草稿成功！')
+    router.push('/content/allContent')
 }
 </script>
 
