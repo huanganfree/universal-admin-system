@@ -4,3 +4,10 @@ export const contentStatusOptions = [
     { label: '已上线', value: 'published', color: 'green' },
     { label: '已下线', value: 'offline', color: 'error' },
 ]
+
+
+export const contentStatusNotPendingOptions = [
+    { label: '草稿', value: 'draft', color: '' },
+    { label: '已上线', value: 'published', color: 'green' },
+    { label: '已下线', value: 'offline', color: 'error' },
+]

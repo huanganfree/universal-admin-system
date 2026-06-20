@@ -9,7 +9,7 @@ const router = createRouter({
       path: '/',
       name: 'layout',
       component: Layout,
-      redirect: '/system/menu',
+      redirect: '/content/allContent',
       children: mockRouters
     },
     {

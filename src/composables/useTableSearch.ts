@@ -9,7 +9,9 @@ import { onBeforeMount, ref, watch, type UnwrapRef } from "vue";
  */
 
 export interface InitSearchParams {
-    url: string
+    url: string;
+    initParams?: { [key: string]: any };
+    transformParams?: (param: any) => { [key: string]: any }
 }
 
 interface PageRes {
@@ -26,10 +28,10 @@ const initPagination = {
     pageSizeOptions: ['10', '20', '50', '100']
 }
 
-export function useTableSearch({ url = '' }: InitSearchParams) {
+export function useTableSearch({ url = '', initParams, transformParams }: InitSearchParams) {
     const pagination = ref(initPagination)
 
-    const filterState = ref({})
+    const filterState = ref({ ...initParams })
     const selectedRowKeys = ref<(string | number)[]>([])
 
     const tableData = ref<any[]>([])
@@ -46,7 +48,7 @@ export function useTableSearch({ url = '' }: InitSearchParams) {
     async function handleSearch() {
         loading.value = true
         const params = {
-            ...filterState.value,
+            ...(transformParams ? transformParams(filterState.value) : {}),
             page: pagination.value.page,
             pageSize: pagination.value.pageSize
         }

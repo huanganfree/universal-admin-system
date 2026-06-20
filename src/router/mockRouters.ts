@@ -14,16 +14,16 @@ export const mockRouters = [
         component: () => import('@/views/content/allContent/allContent.vue')
       },
       {
-        path: '/content/createContent',
-        name: 'createContent',
-        meta: { icon: FileAddOutlined, title: '创建内容' },
-        component: () => import('@/views/content/createContent/createContent.vue')
-      },
-      {
         path: '/content/pendingReview',
         name: 'pendingReview',
         meta: { icon: FileSearchOutlined, title: '待审核' },
         component: () => import('@/views/content/pendingReview/pendingReview.vue')
+      },
+      {
+        path: '/content/createContent',
+        name: 'createContent',
+        meta: { icon: FileAddOutlined, title: '创建内容' },
+        component: () => import('@/views/content/createContent/createContent.vue')
       }
     ]
   },

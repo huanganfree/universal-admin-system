@@ -19,8 +19,8 @@
                     </a-col>
                     <a-col :span="24">
                         <a-form-item label="标签" name="tags">
-                            <a-select v-model:value="formState.tags" placeholder=""
-                                :options="[{ label: '医学', value: '医学' }]" allow-clear mode="multiple" />
+                            <a-select v-model:value="formState.tags" placeholder="" :options="[]" allow-clear
+                                mode="tags" />
                         </a-form-item>
                     </a-col>
                     <a-col :span="24">
@@ -58,7 +58,7 @@ const rules = {
         { required: true, message: '请输入' }
     ],
     coverImage: [
-        { required: true, message: '请上传' }
+        { required: false, message: '请上传' }
     ],
     content: [
         { required: true, message: '请输入' }

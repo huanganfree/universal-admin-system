@@ -13,7 +13,7 @@
                     </a-col>
                     <a-col :span="24">
                         <a-form-item label="手机号" name="phone">
-                            <a-input v-model:value="formState.phone" placeholder="" />
+                            <a-input v-model:value="formState.phone" placeholder="" allow-clear :maxlength="11"/>
                         </a-form-item>
                     </a-col>
                     <a-col :span="24">
@@ -44,12 +44,21 @@ import { fetchAddUser, fetchEditUser } from '@/api/system/user';
 import { message, type FormInstance } from 'ant-design-vue';
 import { ref, watch } from 'vue';
 
+interface UserFormData {
+  username: string
+  roleId: number | undefined
+  nickname: string
+  phone: string
+  id?: number
+  status?: boolean  // 模板里用到了 outFormData.status
+}
+
 const props = withDefaults(
     defineProps<{
-        outFormData?: { [key: string]: unknown }, // 或你真实的角色类型
+        outFormData?: UserFormData, // 或你真实的角色类型
         roleOptions?: { [key: string]: unknown }[]
     }>(),
-    { outFormData: () => ({ username: '', roleId: '', nickname: '', phone: '' }) }
+    { outFormData: () => ({ username: '', roleId: undefined, nickname: '', phone: '' }) }
 )
 
 const rules: {} = {
@@ -67,7 +76,7 @@ const rules: {} = {
     ]
 }
 const emit = defineEmits(['ok'])
-const formState = ref<{ username: string, roleId: number | undefined, nickname: string, id?: number, phone: string }>({
+const formState = ref<UserFormData>({
     username: '',
     roleId: undefined,
     nickname: '',

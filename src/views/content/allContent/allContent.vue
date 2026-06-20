@@ -8,13 +8,16 @@
                 <a-space>
                 </a-space>
                 <a-table :columns="columns" :data-source="tableData" :rowKey="'id'" :loading="loading"
-                    :pagination="pagination" @change="handlePageChange" :scroll="{ x: 1200 }">
+                    :pagination="pagination" @change="handlePageChange" :scroll="{ x: 2000 }">
                     <template #bodyCell="{ column, record }">
                         <template v-if="column.dataIndex === 'cover'">
-                            <a-image :width="80" :src="record.cover[0]?.uid" />
+                            <a-image :height="40" :src="record.cover[0]?.uid" v-if="record.cover[0]?.uid" />
                         </template>
                         <template v-else-if="column.dataIndex === 'tags'">
                             <div>{{ record.tags.join('/') }}</div>
+                        </template>
+                        <template v-else-if="column.dataIndex === 'content'">
+                            <ShowMarkdown :content="record.content" />
                         </template>
                         <template v-else-if="column.dataIndex === 'status'">
                             <a-tag
@@ -23,10 +26,14 @@
                         </template>
                         <template v-else-if="column.dataIndex === 'operations'">
                             <a-flex>
+                                <a-button type="link">查看</a-button>
+                                <a-button type="link">编辑</a-button>
+                                <a-button type="link" v-if="record.status == 'published'">下线</a-button>
+                                <a-button type="link" @click="() => handleSubmit(record)"
+                                    v-if="record.status == 'draft'">提交审核</a-button>
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
-                                    @confirm="() => handleConfirmDelete([record.id], deleteUser)"
-                                    :disabled="record.status">
-                                    <a-button danger type="link" :disabled="record.status">删除</a-button>
+                                    @confirm="() => handleConfirmDelete(record.id, fetchDeleteContent)">
+                                    <a-button danger type="link">删除</a-button>
                                 </a-popconfirm>
                             </a-flex>
                         </template>
@@ -41,11 +48,11 @@
 import TableFilter from '@/components/Table/TableFilter.vue';
 import { ref } from 'vue';
 import { useTableSearch } from '@/composables/useTableSearch';
-import { fetchGetRoleList, getDictItemByDictCode } from '@/api/system/role';
-import { deleteRoles } from "@/api/system/role";
 import { deleteUser, fetchUserStatus } from '@/api/system/user';
-import { contentStatusOptions } from '@/utils/constant';
-
+import { contentStatusNotPendingOptions, contentStatusOptions } from '@/utils/constant';
+import ShowMarkdown from '@/components/ShowMarkdown/ShowMarkdown.vue';
+import { fetchDeleteContent, fetchSubmitContent } from '@/api/content/content';
+import { message } from 'ant-design-vue';
 
 const {
     tableData,
@@ -56,17 +63,18 @@ const {
     handlePageChange,
     handleConfirmDelete,
     pagination,
-    selectedRowKeys,
-    handleSelectChange,
-    handleStatusChange
-} = useTableSearch({ url: `${import.meta.env.VITE_API_CONTENT_URL}/contents/search` })
+} = useTableSearch({ url: `${import.meta.env.VITE_API_CONTENT_URL}/contents/search`, transformParams })
 
-const roleOptions = ref<any[]>([])
-
-function getCheckboxProps(record: { [key: string]: any }) {
-    return {
-        disabled: record.roleCode == 'super_admin' || record.status == 1
+function transformParams(params: any) {
+    const { status, ...leftProps } = params
+    if (status) {
+        return {
+            ...leftProps,
+            status: status.join(',')
+        }
     }
+
+    return params
 }
 
 const queryColumns = ref([
@@ -76,20 +84,12 @@ const queryColumns = ref([
         component: "a-input"
     },
     {
-        title: "标签",
-        key: "tags",
+        title: "状态",
+        key: "status",
         component: "a-select",
         componentProps: {
-            options: [
-                {
-                    label: '启用',
-                    value: 1
-                },
-                {
-                    label: '禁用',
-                    value: 0
-                }
-            ]
+            options: contentStatusNotPendingOptions,
+            mode: 'multiple'
         }
     }
 ])
@@ -97,7 +97,7 @@ const columns = [
     {
         title: '标题',
         dataIndex: 'title',
-        width: 200
+        width: 150
     },
     {
         title: '封面',
@@ -107,50 +107,54 @@ const columns = [
     {
         title: '标签',
         dataIndex: 'tags',
-        width: 200
+        width: 140
     },
     {
         title: '内容',
         dataIndex: 'content',
-        width: 200
+        width: 170
     },
     {
         title: '状态',
         dataIndex: 'status',
-        width: 200
+        width: 100
+    },
+    {
+        title: '驳回备注',
+        dataIndex: 'reviewRemark',
+        width: 160
     },
     {
         title: '创建人',
-        dataIndex: 'createdBy',
-        width: 200
+        dataIndex: 'creatorName',
+        width: 120
     },
     {
         title: '修改人',
-        dataIndex: 'updatedBy',
-        width: 200
+        dataIndex: 'updaterName',
+        width: 120
     },
     {
         title: '创建时间',
         dataIndex: 'createdAt',
-        width: 160
+        width: 150,
     },
     {
         title: '修改时间',
         dataIndex: 'updatedAt',
-        width: 160
+        width: 150,
     },
     {
         title: '操作',
         dataIndex: 'operations',
-        width: 160,
+        width: 234,
         fixed: 'right'
     }
 ]
-
-getAllRoles()
-async function getAllRoles() {
-    const { records = [] } = await fetchGetRoleList({ page: 1, pageSize: 100, status: 1 })
-    roleOptions.value = records
+async function handleSubmit({ id }: { id: string | number }) {
+    await fetchSubmitContent({ id })
+    message.success('提交审核成功！')
+    handleSearch()
 }
 
 </script>

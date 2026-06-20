@@ -1,46 +1,57 @@
 <template>
-    <a-menu v-model:selectedKeys="selectedKeys" :openKeys="openKeys" theme="dark" mode="inline" class="global-menu"
-        @select="handleMenuSelect" @openChange="handleOpen">
-        <template v-for="item in menuData">
-            <a-menu-item :key="item.path" v-if="!item.children?.length" :title="item.meta.title"
+    <a-menu v-model:selectedKeys="selectedKeys" v-model:openKeys="openKeys" theme="dark" mode="inline"
+        class="global-menu" @select="handleMenuSelect" @openChange="handleOpen">
+        <template v-for="item in menuData" :key="item.path">
+            <a-menu-item v-if="!item.children?.length" :key="item.path" :title="item.meta.title"
                 :icon="() => h(item.meta.icon)">
                 <span>{{ item.meta.title }}</span>
             </a-menu-item>
-            <sub-menu v-else :item="item" />
+            <sub-menu v-else :key="item.path + '-sub'" :item="item" />
         </template>
     </a-menu>
 </template>
 
 <script setup lang="ts">
 import { h, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import SubMenu from './SubMenu.vue';
 import { mockRouters } from '@/router/mockRouters';
-import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute()
-const router = useRouter()
-const selectedKeys = ref<string[]>(['/user/userList'])
-const openKeys = ref(['/user'])
-const menuData = ref(mockRouters)
-const emit = defineEmits(['breadcrumb-change'])
+const route = useRoute();
+const router = useRouter();
+const emit = defineEmits(['breadcrumb-change']);
 
-watch(() => route.path, () => {
-    emit('breadcrumb-change', route.matched)
-}, { immediate: true })
+const menuData = ref(mockRouters);
+const selectedKeys = ref<string[]>([]);
+const openKeys = ref<string[]>([]);
 
-initData()
-function initData() {
-    router.push(selectedKeys.value[0]!)
-}
+// 监听路由变化：同步菜单高亮、展开状态和面包屑
+watch(
+    () => route.path,
+    (newPath) => {
+        selectedKeys.value = [newPath];
+        // 自动根据当前路由匹配并展开父级菜单
+        const parentPath = route.matched[route.matched.length - 2]?.path;
+        if (parentPath && !openKeys.value.includes(parentPath)) {
+            openKeys.value = [parentPath];
+        }
+        emit('breadcrumb-change', route.matched);
+    },
+    { immediate: true }
+);
 
 function handleMenuSelect({ key }: { key: string }) {
-    router.push(key)
+    router.push(key);
 }
 
-function handleOpen(open: any) {
-    openKeys.value = [open[open.length - 1]]
+// 手动切换折叠时：手风琴模式（只保留当前展开的顶级菜单）
+function handleOpen(open: string[]) {
+    if (open.length === 0) {
+        openKeys.value = [];
+        return;
+    }
+    openKeys.value = [open[open.length - 1]!];
 }
-
 </script>
 
 <style scoped lang="less"></style>

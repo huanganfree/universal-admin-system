@@ -68,7 +68,7 @@ const request = {
     put: async <T = unknown>({ url, data }: { url: string; data?: { [key: string]: any } }): Promise<T> => {
         return service.put(url, data) as Promise<T>
     },
-    delete: async <T = unknown>({ url, data }: { url: string; data: (string | number)[] }): Promise<T> => {
+    delete: async <T = unknown>({ url, data }: { url: string; data: Array<string | number> | { [key: string]: any } }): Promise<T> => {
         return service.delete(url, { data }) as Promise<T>
     }
 }
