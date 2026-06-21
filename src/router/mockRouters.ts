@@ -1,4 +1,4 @@
-import { AppstoreOutlined, BookOutlined, ContainerOutlined, FileAddOutlined, FileSearchOutlined, SafetyOutlined, SettingOutlined, ToolOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { AppstoreOutlined, BookOutlined, ContainerOutlined, FileAddOutlined, FileSearchOutlined, RestOutlined, SafetyOutlined, SettingOutlined, ToolOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 export const mockRouters = [
   {
@@ -24,6 +24,12 @@ export const mockRouters = [
         name: 'createContent',
         meta: { icon: FileAddOutlined, title: '创建内容' },
         component: () => import('@/views/content/createContent/createContent.vue')
+      },
+      {
+        path: '/content/recycleBin',
+        name: 'recycleBin',
+        meta: { icon: RestOutlined, title: '回收站' },
+        component: () => import('@/views/content/recycleBin/recycleBin.vue')
       }
     ]
   },

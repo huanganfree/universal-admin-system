@@ -5,7 +5,7 @@
                 <h3 style="margin: 0;">创建/编辑内容</h3>
                 <a-space class="btns">
                     <a-button type="primary" @click="handleSaveDraft">保存草稿</a-button>
-                    <a-button type="primary">提交审核</a-button>
+                    <a-button type="primary" @click="handleSaveCheck">提交审核</a-button>
                 </a-space>
             </a-flex>
         </a-card>
@@ -83,6 +83,18 @@ async function handleSaveDraft() {
     })
     message.success('保存草稿成功！')
     router.push('/content/allContent')
+}
+
+async function handleSaveCheck() {
+    await formRef.value!.validate()
+    const { coverImage, ...leftProps } = formState.value
+    await fetchCreateContent({
+        ...leftProps,
+        cover: coverImage,
+        status: 'pending'
+    })
+    message.success('提交审核成功！')
+    router.push('/content/pendingReview')
 }
 </script>
 

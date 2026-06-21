@@ -27,12 +27,17 @@
                         <template v-else-if="column.dataIndex === 'operations'">
                             <a-flex>
                                 <a-button type="link">查看</a-button>
-                                <a-button type="link">编辑</a-button>
-                                <a-button type="link" v-if="record.status == 'published'">下线</a-button>
+                                <a-button type="link"
+                                    v-if="!['published', 'pending'].includes(record.status)">编辑</a-button>
+                                <a-popconfirm title="确定下线吗?" ok-text="是" cancel-text="否"
+                                    @confirm="() => handleUnpublish({ id: record.id })"
+                                    v-if="record.status == 'published'">
+                                    <a-button type="link">下线</a-button>
+                                </a-popconfirm>
                                 <a-button type="link" @click="() => handleSubmit(record)"
-                                    v-if="record.status == 'draft'">提交审核</a-button>
+                                    v-if="record.status == 'draft' || record.status == 'offline'">提交审核</a-button>
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
-                                    @confirm="() => handleConfirmDelete(record.id, fetchDeleteContent)">
+                                    @confirm="() => handleConfirmDelete([record.id], fetchDeleteContent)">
                                     <a-button danger type="link">删除</a-button>
                                 </a-popconfirm>
                             </a-flex>
@@ -51,7 +56,7 @@ import { useTableSearch } from '@/composables/useTableSearch';
 import { deleteUser, fetchUserStatus } from '@/api/system/user';
 import { contentStatusNotPendingOptions, contentStatusOptions } from '@/utils/constant';
 import ShowMarkdown from '@/components/ShowMarkdown/ShowMarkdown.vue';
-import { fetchDeleteContent, fetchSubmitContent } from '@/api/content/content';
+import { fetchDeleteContent, fetchSubmitContent, fetchUnpublishContent } from '@/api/content/content';
 import { message } from 'ant-design-vue';
 
 const {
@@ -112,7 +117,7 @@ const columns = [
     {
         title: '内容',
         dataIndex: 'content',
-        width: 170
+        width: 150
     },
     {
         title: '状态',
@@ -120,29 +125,29 @@ const columns = [
         width: 100
     },
     {
-        title: '驳回备注',
+        title: '驳回原因',
         dataIndex: 'reviewRemark',
-        width: 160
+        width: 150
     },
     {
         title: '创建人',
         dataIndex: 'creatorName',
-        width: 120
+        width: 100
     },
     {
         title: '修改人',
         dataIndex: 'updaterName',
-        width: 120
+        width: 100
     },
     {
         title: '创建时间',
         dataIndex: 'createdAt',
-        width: 150,
+        width: 130,
     },
     {
         title: '修改时间',
         dataIndex: 'updatedAt',
-        width: 150,
+        width: 130,
     },
     {
         title: '操作',
@@ -154,6 +159,12 @@ const columns = [
 async function handleSubmit({ id }: { id: string | number }) {
     await fetchSubmitContent({ id })
     message.success('提交审核成功！')
+    handleSearch()
+}
+
+async function handleUnpublish(data: any) {
+    await fetchUnpublishContent(data)
+    message.success('下线成功！')
     handleSearch()
 }
 

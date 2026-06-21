@@ -27,11 +27,9 @@
                         <template v-else-if="column.dataIndex === 'operations'">
                             <a-flex>
                                 <a-button type="link">查看</a-button>
-                                <a-button type="link" @click="handlePublish(record)">通过</a-button>
-                                <RejectDrawer :out-form-data="record" @ok="handleSearch" />
-                                <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
-                                    @confirm="() => handleConfirmDelete([record.id], fetchDeleteContent)">
-                                    <a-button danger type="link">删除</a-button>
+                                <a-button type="link">恢复</a-button>
+                                <a-popconfirm title="确定彻底删除吗?" ok-text="是" cancel-text="否">
+                                    <a-button danger type="link">彻底删除</a-button>
                                 </a-popconfirm>
                             </a-flex>
                         </template>
@@ -44,14 +42,12 @@
 
 <script setup lang="ts">
 import TableFilter from '@/components/Table/TableFilter.vue';
-import { handleError, ref } from 'vue';
+import { ref } from 'vue';
 import { useTableSearch } from '@/composables/useTableSearch';
-import { fetchGetRoleList, getDictItemByDictCode } from '@/api/system/role';
 import { contentStatusOptions } from '@/utils/constant';
 import ShowMarkdown from '@/components/ShowMarkdown/ShowMarkdown.vue';
-import { fetchDeleteContent, fetchPublisthContent, fetchSubmitContent } from '@/api/content/content';
+import { fetchDeleteContent, fetchPublisthContent } from '@/api/content/content';
 import { message } from 'ant-design-vue';
-import RejectDrawer from './components/rejectDrawer.vue';
 
 const {
     tableData,
@@ -62,7 +58,7 @@ const {
     handlePageChange,
     handleConfirmDelete,
     pagination,
-} = useTableSearch({ url: `${import.meta.env.VITE_API_CONTENT_URL}/pendingContents/search` })
+} = useTableSearch({ url: `${import.meta.env.VITE_API_CONTENT_URL}/deletedContents/search` })
 
 const queryColumns = ref([
     {
@@ -93,19 +89,14 @@ const columns = [
         width: 170
     },
     {
-        title: '状态',
-        dataIndex: 'status',
-        width: 100
-    },
-    {
         title: '创建人',
         dataIndex: 'creatorName',
-        width: 100
+        width: 120
     },
     {
         title: '修改人',
         dataIndex: 'updaterName',
-        width: 100
+        width: 120
     },
     {
         title: '创建时间',

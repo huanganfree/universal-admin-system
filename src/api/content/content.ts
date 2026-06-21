@@ -23,6 +23,10 @@ export async function fetchRejectContent(data: any) {
     return request.put<any>({ url: `${prefix}/content/${data.id}/reject`, data })
 }
 
-export async function fetchDeleteContent(id: string | number) {
-    return request.delete<null>({ url: `${prefix}/content/delete`, data: { id } })
+export async function fetchUnpublishContent(data: any) {
+    return request.put<any>({ url: `${prefix}/content/${data.id}/unpublish`, data })
+}
+
+export async function fetchDeleteContent(ids: (string | number)[]) {
+    return request.delete<null>({ url: `${prefix}/content/delete`, data: ids })
 }
