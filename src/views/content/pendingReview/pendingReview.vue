@@ -26,7 +26,7 @@
                         </template>
                         <template v-else-if="column.dataIndex === 'operations'">
                             <a-flex>
-                                <a-button type="link">查看</a-button>
+                                <a-button type="link" @click="() => handleEdit(record)">查看</a-button>
                                 <a-button type="link" @click="handlePublish(record)">通过</a-button>
                                 <RejectDrawer :out-form-data="record" @ok="handleSearch" />
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
@@ -52,7 +52,9 @@ import ShowMarkdown from '@/components/ShowMarkdown/ShowMarkdown.vue';
 import { fetchDeleteContent, fetchPublisthContent, fetchSubmitContent } from '@/api/content/content';
 import { message } from 'ant-design-vue';
 import RejectDrawer from './components/rejectDrawer.vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const {
     tableData,
     loading,
@@ -93,11 +95,6 @@ const columns = [
         width: 170
     },
     {
-        title: '状态',
-        dataIndex: 'status',
-        width: 100
-    },
-    {
         title: '创建人',
         dataIndex: 'creatorName',
         width: 100
@@ -110,12 +107,18 @@ const columns = [
     {
         title: '创建时间',
         dataIndex: 'createdAt',
-        width: 150,
+        width: 160,
     },
     {
         title: '修改时间',
         dataIndex: 'updatedAt',
-        width: 150,
+        width: 160,
+    },
+    {
+        title: '状态',
+        dataIndex: 'status',
+        width: 82,
+        fixed: 'right'
     },
     {
         title: '操作',
@@ -124,6 +127,10 @@ const columns = [
         fixed: 'right'
     }
 ]
+
+function handleEdit(params: any) {
+    router.push(`/content/createContent?id=${params?.id}&isView=1`)
+}
 
 async function handlePublish({ id }: { id: string | number }) {
     await fetchPublisthContent({ id })

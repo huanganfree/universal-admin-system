@@ -11,7 +11,9 @@ import { onBeforeMount, ref, watch, type UnwrapRef } from "vue";
 export interface InitSearchParams {
     url: string;
     initParams?: { [key: string]: any };
-    transformParams?: (param: any) => { [key: string]: any }
+    transformParams?: (param: any) => { [key: string]: any };
+    isAll?: boolean;
+    transformData?: (param: any[]) => any[];
 }
 
 interface PageRes {
@@ -28,7 +30,7 @@ const initPagination = {
     pageSizeOptions: ['10', '20', '50', '100']
 }
 
-export function useTableSearch({ url = '', initParams, transformParams }: InitSearchParams) {
+export function useTableSearch({ url = '', initParams, transformParams, isAll = false, transformData }: InitSearchParams) {
     const pagination = ref(initPagination)
 
     const filterState = ref({ ...initParams })
@@ -46,15 +48,27 @@ export function useTableSearch({ url = '', initParams, transformParams }: InitSe
     }
 
     async function handleSearch() {
+        if (!url) return
         loading.value = true
         const params = {
-            ...(transformParams ? transformParams(filterState.value) : {}),
+            ...(transformParams ? transformParams(filterState.value) : filterState.value),
             page: pagination.value.page,
             pageSize: pagination.value.pageSize
         }
-        const { total: count, records } = await request.get<PageRes>({ url, params })// 查询列表就是get方法
-        pagination.value.total = count
-        tableData.value = records
+        if (!isAll) {
+            const { total: count, records } = await request.get<PageRes>({ url, params })// 查询列表就是get方法
+            pagination.value.total = count
+            tableData.value = records
+        } else {
+            const { page, pageSize, ...left } = params
+            const records = await request.get<any[]>({ url, params: left })// 查询列表就是get方法
+            if (transformData) {
+                tableData.value = transformData(records)
+            } else {
+                tableData.value = records
+            }
+        }
+
         loading.value = false
     }
 
@@ -80,9 +94,14 @@ export function useTableSearch({ url = '', initParams, transformParams }: InitSe
 
     async function handleStatusChange(status: number, record: any, func: (id: number, status: number) => Promise<any>) {
         // await changeRoleStatus(record.id, status)
-        await func(record.id, status)
-        message.success('操作成功！');
-        handleSearch()
+        try {
+            await func(record.id, status)
+            message.success('操作成功！');
+            handleSearch()
+        } catch (error) {
+            record.status = status ? 0 : 1
+            tableData.value = [...tableData.value]
+        }
     }
 
     return {

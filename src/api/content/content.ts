@@ -30,3 +30,21 @@ export async function fetchUnpublishContent(data: any) {
 export async function fetchDeleteContent(ids: (string | number)[]) {
     return request.delete<null>({ url: `${prefix}/content/delete`, data: ids })
 }
+
+export async function fetchContentDetail(id: string | number) {
+    return request.get<any>({ url: `${prefix}/detail/${id}` })
+}
+
+export async function fetchEditContent(data: any) {
+    const { id, ...left } = data
+    return request.put<any>({ url: `${prefix}/${id}`, data: left })
+}
+
+export async function fetchRestoreContent(id: any) {
+    return request.put<any>({ url: `${prefix}/${id}/restore` })
+}
+
+// 物理删除
+export async function fetchPhysicalDeleteContent(ids: (string | number)[]) {
+    return request.delete<null>({ url: `${prefix}/destroy`, data: ids })
+}

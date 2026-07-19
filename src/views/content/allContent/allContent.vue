@@ -6,6 +6,7 @@
         <a-card :bordered="false">
             <a-flex :gap="10" vertical>
                 <a-space>
+                    <a-button type="primary" @click="handleAdd">创建</a-button>
                 </a-space>
                 <a-table :columns="columns" :data-source="tableData" :rowKey="'id'" :loading="loading"
                     :pagination="pagination" @change="handlePageChange" :scroll="{ x: 2000 }">
@@ -26,9 +27,9 @@
                         </template>
                         <template v-else-if="column.dataIndex === 'operations'">
                             <a-flex>
-                                <a-button type="link">查看</a-button>
-                                <a-button type="link"
-                                    v-if="!['published', 'pending'].includes(record.status)">编辑</a-button>
+                                <a-button type="link" @click="() => handleEdit(record, 1)">查看</a-button>
+                                <a-button type="link" v-if="!['published', 'pending'].includes(record.status)"
+                                    @click="() => handleEdit(record, 0)">编辑</a-button>
                                 <a-popconfirm title="确定下线吗?" ok-text="是" cancel-text="否"
                                     @confirm="() => handleUnpublish({ id: record.id })"
                                     v-if="record.status == 'published'">
@@ -53,11 +54,13 @@
 import TableFilter from '@/components/Table/TableFilter.vue';
 import { ref } from 'vue';
 import { useTableSearch } from '@/composables/useTableSearch';
-import { deleteUser, fetchUserStatus } from '@/api/system/user';
 import { contentStatusNotPendingOptions, contentStatusOptions } from '@/utils/constant';
 import ShowMarkdown from '@/components/ShowMarkdown/ShowMarkdown.vue';
 import { fetchDeleteContent, fetchSubmitContent, fetchUnpublishContent } from '@/api/content/content';
 import { message } from 'ant-design-vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 const {
     tableData,
@@ -69,6 +72,11 @@ const {
     handleConfirmDelete,
     pagination,
 } = useTableSearch({ url: `${import.meta.env.VITE_API_CONTENT_URL}/contents/search`, transformParams })
+
+
+function handleAdd() {
+    router.push(`/content/createContent`)
+}
 
 function transformParams(params: any) {
     const { status, ...leftProps } = params
@@ -120,11 +128,6 @@ const columns = [
         width: 150
     },
     {
-        title: '状态',
-        dataIndex: 'status',
-        width: 100
-    },
-    {
         title: '驳回原因',
         dataIndex: 'reviewRemark',
         width: 150
@@ -150,12 +153,23 @@ const columns = [
         width: 130,
     },
     {
+        title: '状态',
+        dataIndex: 'status',
+        width: 60,
+        fixed: 'right'
+    },
+    {
         title: '操作',
         dataIndex: 'operations',
-        width: 234,
+        width: 201,
         fixed: 'right'
     }
 ]
+
+function handleEdit(params: any, type: number) {
+    router.push(`/content/createContent?id=${params?.id}&isView=${type}`)
+}
+
 async function handleSubmit({ id }: { id: string | number }) {
     await fetchSubmitContent({ id })
     message.success('提交审核成功！')

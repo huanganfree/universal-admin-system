@@ -32,3 +32,12 @@ export async function changeRoleStatus(id: number, status: number) {
     return request.put<null>({ url: `${prefix}/role/${id}/status`, data: { status } })
 }
 
+// 角色菜单
+export async function fetchUpdateRoleAuth(id: number, menuIds: any[]) {
+    return request.put<null>({ url: `${prefix}/role/${id}/auth`, data: { menuIds } })
+}
+
+export async function fetchGetRoleAuth(id: number) {
+    return request.get<null>({ url: `${prefix}/role/auth`, params: { id } })
+}
+

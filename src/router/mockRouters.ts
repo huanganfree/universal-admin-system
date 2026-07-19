@@ -69,7 +69,7 @@ export const mockRouters = [
         path: '/system/menu',
         name: 'menu',
         meta: { icon: AppstoreOutlined, title: '菜单管理' },
-        component: () => import('@/views/system/menu.vue')
+        component: () => import('@/views/system/menu/menu.vue')
       },
     ]
   }

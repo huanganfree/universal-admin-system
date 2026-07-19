@@ -45,13 +45,10 @@ service.interceptors.response.use(function (response) {
             content: msg || 'token失效，请重新登录',
         });
         router.replace('/login')
-        setTimeout(() => {
-            window.location.reload()
-        }, 300)
         return
     } else {
         message.error({
-            content: `502, ${error.response.statusText}`,
+            content: `500, ${error.response.statusText}`,
         });
     }
     return Promise.reject(error);

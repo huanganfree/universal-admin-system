@@ -3,8 +3,8 @@ import request from "@/axios/axios"
 const prefix = import.meta.env.VITE_API_SYSTEM_URL
 
 
-export async function fetchAddUser({ username, roleId, nickname, id }: { username: string, roleId: number | undefined, nickname: string, id?: number }) {
-    return request.post<null>({ url: `${prefix}/user/create`, data: { username, roleId, nickname } })
+export async function fetchAddUser(data: { phone: string | number, username: string, roleId: number | undefined, nickname: string, id?: number }) {
+    return request.post<null>({ url: `${prefix}/user/create`, data })
 }
 
 export async function fetchUserStatus(id: number, status: number) {

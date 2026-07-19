@@ -10,7 +10,7 @@
             </a-flex>
         </a-card>
         <a-card title="配置">
-            <a-form :model="formState" ref="formRef" :rules="rules" layout="vertical">
+            <a-form :model="formState" ref="formRef" :rules="rules" layout="vertical" :disabled="isDisabled">
                 <a-row :gutter="16">
                     <a-col :span="24">
                         <a-form-item label="标题" name="title">
@@ -30,7 +30,7 @@
                     </a-col>
                     <a-col :span="24">
                         <a-form-item label="内容" name="content">
-                            <markdown-editor v-model="formState.content" />
+                            <markdown-editor v-model:content="formState.content" :disabled="isDisabled" />
                         </a-form-item>
                     </a-col>
                 </a-row>
@@ -41,14 +41,20 @@
 </template>
 
 <script setup lang="ts">
-import { fetchCreateContent } from '@/api/content/content';
+import { fetchContentDetail, fetchCreateContent, fetchEditContent } from '@/api/content/content';
 import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor.vue';
 import UploadFile from '@/components/Upload/UploadFile.vue';
 import { message } from 'ant-design-vue';
-import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, onBeforeMount, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter()
+const { id, isView = '0' } = useRoute().query || { isView: '0' }
+
+const isDisabled = computed(() => {
+    return parseFloat(isView as (string)) === 1
+})
+
 const formRef = ref<import('ant-design-vue').FormInstance | null>(null)
 const rules = {
     tags: [
@@ -65,22 +71,43 @@ const rules = {
     ]
 }
 
-const formState = ref({
+const formState = ref<{ [key: string]: any }>({
     tags: [],
     title: '',
     coverImage: [],
     content: ''
-
 })
 
+onBeforeMount(() => {
+    if (id)
+        initData()
+})
+
+async function initData() {
+    const res = await fetchContentDetail(id as string)
+    formState.value = {
+        ...res,
+        coverImage: res.cover
+    }
+}
+
+// 保存草稿
 async function handleSaveDraft() {
     await formRef.value!.validate()
     const { coverImage, ...leftProps } = formState.value
-    await fetchCreateContent({
-        ...leftProps,
-        cover: coverImage,
-        status: 'draft'
-    })
+    if (!leftProps.id) {
+        await fetchCreateContent({
+            ...leftProps,
+            cover: coverImage,
+            status: 'draft'
+        })
+    } else {
+        await fetchEditContent({
+            ...leftProps,
+            cover: coverImage,
+            status: 'draft'
+        })
+    }
     message.success('保存草稿成功！')
     router.push('/content/allContent')
 }

@@ -11,3 +11,9 @@ export const contentStatusNotPendingOptions = [
     { label: '已上线', value: 'published', color: 'green' },
     { label: '已下线', value: 'offline', color: 'error' },
 ]
+
+export const menuTypeOptions = [
+    { label: '菜单', value: '1' },
+    { label: '按钮', value: '2' },
+]
+

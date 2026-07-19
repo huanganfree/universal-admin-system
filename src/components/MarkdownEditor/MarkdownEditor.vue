@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<{
     disabled: false,
     underlineVisible: true
 })
-let vditor = null
+let vditor: any = null
 const emit = defineEmits(['update:modelValue'])
 const content = defineModel('content', { default: '' })
 
