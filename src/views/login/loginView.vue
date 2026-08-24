@@ -22,13 +22,13 @@
             </a-form-item>
 
             <a-form-item label="">
-                <a-button type="primary" html-type="submit" block size="large">登录</a-button>
+                <a-button type="primary" html-type="submit" block size="large" :loading="loading">登录</a-button>
             </a-form-item>
         </a-form>
     </div>
 </template>
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 import Fire from '@/assets/image/fire.svg'
 import { useRouter } from 'vue-router';
 import { handleLogin } from '@/api/login/login';
@@ -44,6 +44,11 @@ interface FormState {
 
 const router = useRouter()
 
+const loading = ref(false)
+
+onBeforeMount(() => {
+    localStorage.clear()
+})
 const formState = reactive<FormState>({
     phone: '',
     password: '',
@@ -51,8 +56,11 @@ const formState = reactive<FormState>({
 });
 const onFinish = async (values: any) => {
     console.log('Success:', values);
+    loading.value = true
     const res = await handleLogin(values)
+    loading.value = false
     authStore.getToken(res)
+    // 跳转全部内容
     router.push('/')
 };
 

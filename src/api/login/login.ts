@@ -12,3 +12,7 @@ export async function handleLogin(data: { [key: string]: any }) {
 export async function fetchGetUserInfo() {
     return request.get<AuthState['userInfo']>({ url: `${prefix}/userInfo` })
 }
+
+export async function fetchGetUserMenus() {
+    return request.get<any>({ url: `${prefix}/menus` })
+}

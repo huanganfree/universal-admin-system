@@ -7,8 +7,8 @@
         <a-layout>
             <a-layout-header class="global-layout-header">
                 <a-breadcrumb>
-                    <a-breadcrumb-item v-for="item in breadcrumbData" :key="item.path">{{ item.meta.title
-                        }}</a-breadcrumb-item>
+                    <a-breadcrumb-item v-for="item in breadcrumbData" :key="item.path">{{ item.meta?.title
+                    }}</a-breadcrumb-item>
                 </a-breadcrumb>
                 <Avatar />
             </a-layout-header>
@@ -29,11 +29,11 @@ const breadcrumbData = ref<{ [key: string]: any }>([])
 const collapsed = ref<boolean>(false);
 
 onMounted(() => {
-    useAuthStore().getUserInfo()
+    useAuthStore().getUserInfo();
 })
 
-function handleBread(params: any) {
-    breadcrumbData.value = params.slice(1)
+function handleBread(params: any[]) {
+    breadcrumbData.value = params
 }
 </script>
 <style lang="less" scoped>

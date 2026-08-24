@@ -30,7 +30,7 @@
                                 <AuthConfig :outFormData="record" />
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
                                     @confirm="() => handleConfirmDelete([record.id], deleteRoles)"
-                                    :disabled="record.status">
+                                    :disabled="record.status" v-if="record.roleCode !== 'super_admin'">
                                     <a-button danger type="link" :disabled="record.status">删除</a-button>
                                 </a-popconfirm>
                             </a-flex>

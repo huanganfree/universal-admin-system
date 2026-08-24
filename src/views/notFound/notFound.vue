@@ -16,8 +16,4 @@ import NOtFound from '@/assets/image/notFound.svg';
 const router = useRouter()
 </script>
 
-<style scoped lang="less">
-.not-found {
-    // 样式代码
-}
-</style>
+<style scoped lang="less"></style>

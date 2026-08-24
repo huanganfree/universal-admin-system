@@ -1,6 +1,6 @@
 <template>
     <div class="component-name">
-        <a-button type="link" @click="() => handleGetAuth()" :disabled="outFormData.status">权限</a-button>
+        <a-button type="link" @click="() => handleGetAuth()">权限</a-button>
         <a-drawer width="36%" :title="'配置权限'" @close="() => handleVisible(false)" :destroy-on-close="true"
             v-model:open="visible">
             <a-tree v-model:checkedKeys="authData" :tree-data="authOptions" defaultExpandAll v-if="authOptions.length"

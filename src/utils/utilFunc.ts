@@ -1,12 +1,13 @@
 // 1. 定义菜单的 TypeScript 接口类型
-interface MenuNode {
+export interface MenuNode {
     id: number;
     parentId: number | null;
     name: string;
     path: string;
     sort: number;
     children?: MenuNode[]; // 转树后自动生成该字段
-    [key: string]: unknown
+    meta: { icon: string, [key: string]: any };
+    [key: string]: any
 }
 
 /**
@@ -17,13 +18,21 @@ export function flatToTree(flatList: MenuNode[]): MenuNode[] {
     const itemMap: Record<number, MenuNode> = {};
     const treeRoots: MenuNode[] = [];
 
+    // 新增：先按 sort 升序排序，sort 为空的排到最后
+    // 用 [...flatList] 拷贝一份，不修改原数组
+    const sortedList = [...flatList].sort((a, b) => {
+        const sortA = a.sort ?? Number.MAX_SAFE_INTEGER;
+        const sortB = b.sort ?? Number.MAX_SAFE_INTEGER;
+        return sortA - sortB;
+    });
+
     // 第一步：深拷贝所有节点并存入 Map 方便通过 ID 瞬间查找到
-    flatList.forEach(item => {
+    sortedList.forEach(item => {
         itemMap[item.id] = { ...item };
     });
 
     // 第二步：遍历数据，通过父级引用直接“各找各妈”
-    flatList.forEach(item => {
+    sortedList.forEach(item => {
         const currentId = item.id;
         const parentId = item.parentId;
         const treeItem = itemMap[currentId];

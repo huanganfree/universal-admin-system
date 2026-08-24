@@ -4,8 +4,9 @@
             <a-flex justify="space-between" align="center">
                 <h3 style="margin: 0;">创建/编辑内容</h3>
                 <a-space class="btns">
-                    <a-button type="primary" @click="handleSaveDraft">保存草稿</a-button>
-                    <a-button type="primary" @click="handleSaveCheck">提交审核</a-button>
+                    <a-button @click="router.back()">返回</a-button>
+                    <a-button type="primary" @click="handleSaveDraft" :disabled="isDisabled">保存草稿</a-button>
+                    <a-button type="primary" @click="handleSaveCheck" :disabled="isDisabled">提交审核</a-button>
                 </a-space>
             </a-flex>
         </a-card>

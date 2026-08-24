@@ -22,7 +22,7 @@ export const mockRouters = [
       {
         path: '/content/createContent',
         name: 'createContent',
-        meta: { icon: FileAddOutlined, title: '创建内容' },
+        meta: { icon: FileAddOutlined, title: '创作内容' },
         component: () => import('@/views/content/createContent/createContent.vue')
       },
       {
