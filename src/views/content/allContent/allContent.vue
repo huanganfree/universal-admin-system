@@ -27,19 +27,23 @@
                         </template>
                         <template v-else-if="column.dataIndex === 'operations'">
                             <a-flex>
-                                <a-button type="link" @click="() => handleEdit(record, 1)">查看</a-button>
+                                <a-button type="link" @click="() => handleEdit(record, 1)"
+                                    v-permissions="'content:allContent:view'">查看</a-button>
                                 <a-button type="link" v-if="!['published', 'pending'].includes(record.status)"
-                                    @click="() => handleEdit(record, 0)">编辑</a-button>
+                                    @click="() => handleEdit(record, 0)"
+                                    v-permissions="'content:allContent:edit'">编辑</a-button>
                                 <a-popconfirm title="确定下线吗?" ok-text="是" cancel-text="否"
                                     @confirm="() => handleUnpublish({ id: record.id })"
                                     v-if="record.status == 'published'">
-                                    <a-button type="link">下线</a-button>
+                                    <a-button type="link" v-permissions="'content:allContent:unpublish'">下线</a-button>
                                 </a-popconfirm>
                                 <a-button type="link" @click="() => handleSubmit(record)"
-                                    v-if="record.status == 'draft' || record.status == 'offline'">提交审核</a-button>
+                                    v-if="record.status == 'draft' || record.status == 'offline'"
+                                    v-permissions="'content:allContent:approve'">提交审核</a-button>
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
                                     @confirm="() => handleConfirmDelete([record.id], fetchDeleteContent)">
-                                    <a-button danger type="link">删除</a-button>
+                                    <a-button danger type="link"
+                                        v-permissions="'content:allContent:delete'">删除</a-button>
                                 </a-popconfirm>
                             </a-flex>
                         </template>
@@ -122,11 +126,11 @@ const columns = [
         dataIndex: 'tags',
         width: 140
     },
-    {
-        title: '内容',
-        dataIndex: 'content',
-        width: 150
-    },
+    // {
+    //     title: '内容',
+    //     dataIndex: 'content',
+    //     width: 150
+    // },
     {
         title: '驳回原因',
         dataIndex: 'reviewRemark',

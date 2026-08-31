@@ -24,7 +24,12 @@
                                 :disabled="record.roleCode == 'super_admin'"
                                 @change="(value: number) => handleStatusChange(value, record, fetchUserStatus)" />
                         </template>
-                        <template v-if="column.dataIndex === 'operations'">
+                        <template v-else-if="column.dataIndex === 'avatar'">
+                            <a-image :width="'100%'" :src="record.avatar" v-if="record.avatar"
+                                style="border-radius: 10px;" />
+                            <div class="default-avatar" v-else></div>
+                        </template>
+                        <template v-else-if="column.dataIndex === 'operations'">
                             <a-flex>
                                 <AddUser @ok="handleSearch" :outFormData="record" :role-options="roleOptions" />
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
@@ -107,7 +112,14 @@ const queryColumns = ref([
 const columns = [
     {
         title: '用户名',
-        dataIndex: 'username'
+        dataIndex: 'username',
+        width: 120
+    },
+    {
+        title: '头像',
+        dataIndex: 'avatar',
+        ellipsis: true,
+        width: 96
     },
     {
         title: '手机号',
@@ -116,7 +128,8 @@ const columns = [
     },
     {
         title: '昵称',
-        dataIndex: 'nickname'
+        dataIndex: 'nickname',
+        width: 120
     },
     {
         title: '角色',
@@ -140,7 +153,8 @@ const columns = [
     },
     {
         title: '状态',
-        dataIndex: 'status'
+        dataIndex: 'status',
+        width: 90
     },
     {
         title: '操作',
@@ -158,4 +172,11 @@ async function getAllRoles() {
 
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.default-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #c6c6c6;
+}
+</style>

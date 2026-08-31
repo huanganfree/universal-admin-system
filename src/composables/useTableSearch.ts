@@ -55,21 +55,25 @@ export function useTableSearch({ url = '', initParams, transformParams, isAll = 
             page: pagination.value.page,
             pageSize: pagination.value.pageSize
         }
-        if (!isAll) {
-            const { total: count, records } = await request.get<PageRes>({ url, params })// 查询列表就是get方法
-            pagination.value.total = count
-            tableData.value = records
-        } else {
-            const { page, pageSize, ...left } = params
-            const records = await request.get<any[]>({ url, params: left })// 查询列表就是get方法
-            if (transformData) {
-                tableData.value = transformData(records)
-            } else {
+        try {
+            if (!isAll) {
+                const { total: count, records } = await request.get<PageRes>({ url, params })// 查询列表就是get方法
+                pagination.value.total = count
                 tableData.value = records
+            } else {
+                const { page, pageSize, ...left } = params
+                const records = await request.get<any[]>({ url, params: left })// 查询列表就是get方法
+                if (transformData) {
+                    tableData.value = transformData(records)
+                } else {
+                    tableData.value = records
+                }
             }
-        }
+        } catch (error) {
 
-        loading.value = false
+        } finally {
+            loading.value = false
+        }
     }
 
     function resetSearch() {

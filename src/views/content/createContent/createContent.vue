@@ -116,11 +116,19 @@ async function handleSaveDraft() {
 async function handleSaveCheck() {
     await formRef.value!.validate()
     const { coverImage, ...leftProps } = formState.value
-    await fetchCreateContent({
-        ...leftProps,
-        cover: coverImage,
-        status: 'pending'
-    })
+    if (!leftProps.id) {
+        await fetchCreateContent({
+            ...leftProps,
+            cover: coverImage,
+            status: 'pending'
+        })
+    } else {
+        await fetchEditContent({
+            ...leftProps,
+            cover: coverImage,
+            status: 'pending'
+        })
+    }
     message.success('提交审核成功！')
     router.push('/content/pendingReview')
 }

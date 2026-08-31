@@ -56,12 +56,18 @@ const formState = reactive<FormState>({
 });
 const onFinish = async (values: any) => {
     console.log('Success:', values);
-    loading.value = true
-    const res = await handleLogin(values)
-    loading.value = false
-    authStore.getToken(res)
-    // 跳转全部内容
-    router.push('/')
+    try {
+        loading.value = true
+        const res = await handleLogin(values)
+        authStore.getToken(res)
+        // 跳转全部内容
+        router.push('/')
+    } catch (error) {
+
+    } finally {
+        loading.value = false
+    }
+
 };
 
 const onFinishFailed = (errorInfo: any) => {

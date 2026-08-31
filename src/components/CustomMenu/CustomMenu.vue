@@ -2,8 +2,7 @@
     <a-menu v-model:selectedKeys="selectedKeys" v-model:openKeys="openKeys" theme="dark" mode="inline"
         class="global-menu" @select="handleMenuSelect">
         <template v-for="item in menusData" :key="item.path">
-            <a-menu-item v-if="!item.children?.length" :key="item.path" :title="item.meta.title"
-                :icon="() => h(item.meta.icon)">
+            <a-menu-item v-if="!item.children?.length" :key="item.path" :title="item.meta.title">
                 <span>{{ item.meta.title }}</span>
             </a-menu-item>
             <sub-menu v-else :key="item.path + '-sub'" :item="item" />
@@ -18,6 +17,8 @@ import SubMenu from './SubMenu.vue';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 
 const menusData = useAuthStore().menus
+console.log(menusData);
+
 const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(['breadcrumb-change']);

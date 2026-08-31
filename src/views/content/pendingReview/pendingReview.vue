@@ -26,12 +26,16 @@
                         </template>
                         <template v-else-if="column.dataIndex === 'operations'">
                             <a-flex>
-                                <a-button type="link" @click="() => handleEdit(record)">查看</a-button>
-                                <a-button type="link" @click="handlePublish(record)">通过</a-button>
-                                <RejectDrawer :out-form-data="record" @ok="handleSearch" />
+                                <a-button type="link" @click="() => handleEdit(record)"
+                                    v-permissions="'content:pendingContent:view'">查看</a-button>
+                                <a-button type="link" @click="handlePublish(record)"
+                                    v-permissions="'content:pendingContent:approve'">通过</a-button>
+                                <RejectDrawer :out-form-data="record" @ok="handleSearch"
+                                    v-permissions="'content:pendingContent:reject'" />
                                 <a-popconfirm title="确定删除吗?" ok-text="是" cancel-text="否"
                                     @confirm="() => handleConfirmDelete([record.id], fetchDeleteContent)">
-                                    <a-button danger type="link">删除</a-button>
+                                    <a-button danger type="link"
+                                        v-permissions="'content:pendingContent:delete'">删除</a-button>
                                 </a-popconfirm>
                             </a-flex>
                         </template>
@@ -89,11 +93,11 @@ const columns = [
         dataIndex: 'tags',
         width: 200
     },
-    {
-        title: '内容',
-        dataIndex: 'content',
-        width: 170
-    },
+    // {
+    //     title: '内容',
+    //     dataIndex: 'content',
+    //     width: 170
+    // },
     {
         title: '创建人',
         dataIndex: 'creatorName',

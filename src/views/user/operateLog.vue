@@ -1,10 +1,11 @@
 <template>
-    <div class="component-name">
-        操作日志
-    </div>
+    <a-flex :gap="10" vertical>
+        <a-card :bordered="false" style="flex: 1;">
+            暂未开放
+        </a-card>
+    </a-flex>
 </template>
-
-<script setup lang="ts">
+<script lang="ts" setup>
+import { Empty } from 'ant-design-vue';
+const simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
 </script>
-
-<style scoped lang="less"></style>

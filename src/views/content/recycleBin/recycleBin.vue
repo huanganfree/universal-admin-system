@@ -91,11 +91,11 @@ const columns = [
         dataIndex: 'tags',
         width: 200
     },
-    {
-        title: '内容',
-        dataIndex: 'content',
-        width: 170
-    },
+    // {
+    //     title: '内容',
+    //     dataIndex: 'content',
+    //     width: 170
+    // },
     {
         title: '创建人',
         dataIndex: 'creatorName',

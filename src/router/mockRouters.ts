@@ -1,4 +1,4 @@
-import { AppstoreOutlined, BookOutlined, ContainerOutlined, FileAddOutlined, FileSearchOutlined, RestOutlined, SafetyOutlined, SettingOutlined, ToolOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { AppstoreOutlined, BookOutlined, ContainerOutlined, FileAddOutlined, FileSearchOutlined, RestOutlined, SafetyOutlined, ToolOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 export const mockRouters = [
   {
