@@ -4,7 +4,7 @@ import router from "@/router";
 import { fetchRefreshToken } from "@/api/login/login";
 
 const service: AxiosInstance = axios.create({
-    baseURL: '',
+    baseURL: import.meta.env.VITE_API_BASE_URL,
     timeout: 10000
 })
 

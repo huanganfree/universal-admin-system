@@ -8,5 +8,8 @@ interface ImportMetaEnv {
     readonly VITE_API_AUTH_URL: string
     readonly VITE_API_SYSTEM_URL: string
     readonly VITE_API_CONTENT_URL: string
+    readonly VITE_PUBLIC_PATH: string
+    readonly VITE_API_BASE_URL: string
+    readonly VITE_GLOB_IMG_URL: string
     // 更多环境变量...
 }

@@ -6,7 +6,7 @@ import { flatToTree, type MenuNode } from '@/utils/utilFunc'
 import { useAuthStore } from '@/stores/useAuthStore'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
   routes: [
     {
       path: '/',

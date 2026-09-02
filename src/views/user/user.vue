@@ -25,7 +25,7 @@
                                 @change="(value: number) => handleStatusChange(value, record, fetchUserStatus)" />
                         </template>
                         <template v-else-if="column.dataIndex === 'avatar'">
-                            <a-image :width="'100%'" :src="record.avatar" v-if="record.avatar"
+                            <a-image :width="'100%'" :src="getImageUrl(record.avatar)" v-if="record.avatar"
                                 style="border-radius: 10px;" />
                             <div class="default-avatar" v-else></div>
                         </template>
@@ -54,6 +54,7 @@ import { useTableSearch } from '@/composables/useTableSearch';
 import { fetchGetRoleList, getDictItemByDictCode } from '@/api/system/role';
 import { deleteRoles } from "@/api/system/role";
 import { deleteUser, fetchUserStatus } from '@/api/system/user';
+import { getImageUrl } from '@/utils/image.ts';
 
 const {
     tableData,
