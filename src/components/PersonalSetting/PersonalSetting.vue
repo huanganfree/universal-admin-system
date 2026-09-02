@@ -40,7 +40,7 @@ const rules: {} = {
         { required: true, message: '请输入' }
     ]
 }
-const formState = ref({
+const formState = ref<{ id: null | number, [key: string]: any }>({
     avatar: [] as any[],
     nickname: '',
     id: null

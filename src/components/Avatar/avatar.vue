@@ -1,7 +1,7 @@
 <template>
     <a-dropdown>
         <a-space style="cursor: pointer;">
-            <a-avatar :size="33" :src="authStore.userInfo.avatar">
+            <a-avatar :size="33" :src="getImageUrl(authStore.userInfo.avatar)">
                 <!-- <template #icon>
                     <UserOutlined v-if="!authStore.userInfo.avatar" />
                 </template> -->
@@ -29,6 +29,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons-vue';
 import PersonalSetting from '../PersonalSetting/PersonalSetting.vue';
 import { ref } from 'vue';
+import { getImageUrl } from '@/utils/image.ts';
 
 const authStore = useAuthStore()
 const personalSettingVisible = ref(false)

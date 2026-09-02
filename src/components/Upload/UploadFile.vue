@@ -2,7 +2,7 @@
     <a-upload v-model:file-list="fileList" name="file" :max-count="1" action="" :beforeUpload="beforeUpload"
         :customRequest="handleUploadFile" accept="image/*" list-type="picture-card" class="avatar-uploader"
         :showUploadList="false">
-        <img class="img" v-if="fileList[0]?.uid" :src="fileList[0]?.uid" alt="avatar" />
+        <img class="img" v-if="fileList[0]?.uid" :src="getImageUrl(fileList[0]?.uid)" alt="avatar" />
         <div v-else>
             <plus-outlined></plus-outlined>
         </div>
@@ -10,6 +10,7 @@
 </template>
 <script lang="ts" setup>
 import { fetchUploadFile } from '@/api/content/content';
+import { getImageUrl } from '@/utils/image';
 
 interface FileType {
     uid: string;

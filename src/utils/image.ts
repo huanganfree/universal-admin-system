@@ -1,5 +1,5 @@
 // src/utils/image.ts
-const IMG_BASE_URL = import.meta.env.VITE_GLOB_IMG_URL || '/ha-project/admin';
+const IMG_BASE_URL = import.meta.env.VITE_GLOB_IMG_URL;
 
 /**
  * 格式化图片路径，自动补全域名/子路径前缀

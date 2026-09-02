@@ -11,7 +11,8 @@
                     :pagination="pagination" @change="handlePageChange" :scroll="{ x: 1300 }">
                     <template #bodyCell="{ column, record }">
                         <template v-if="column.dataIndex === 'cover'">
-                            <a-image :height="40" :src="record.cover[0]?.uid" v-if="record.cover[0]?.uid" />
+                            <a-image :height="40" :src="getImageUrl(record.cover[0]?.uid)"
+                                v-if="record.cover[0]?.uid" />
                         </template>
                         <template v-else-if="column.dataIndex === 'tags'">
                             <div>{{ record.tags.join('/') }}</div>
@@ -57,6 +58,7 @@ import { fetchDeleteContent, fetchPublisthContent, fetchSubmitContent } from '@/
 import { message } from 'ant-design-vue';
 import RejectDrawer from './components/rejectDrawer.vue';
 import { useRouter } from 'vue-router';
+import { getImageUrl } from '@/utils/image.ts';
 
 const router = useRouter()
 const {
