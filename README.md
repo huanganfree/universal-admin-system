@@ -1,42 +1,18 @@
-# vue-project
+# koa-admin-frontend
+后台管理系统前端项目
 
-This template should help get you started developing with Vue 3 in Vite.
+## 已经完成的功能
 
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+- ✅ **鉴权与权限控制**
+  - ✅ 基于 JWT (JSON Web Token) 的用户登录认证
+  - ✅ 基于 RBAC (Role-Based Access Control) 的角色与菜单/接口权限管理
+- ✅ **基础管理模块**
+  - ✅ 用户管理（增删改查、分页、分配角色、重置密码）
+  - ✅ 角色管理（增删改查、分配菜单权限）
+  - ✅ 菜单与路由管理（动态菜单配置、支持嵌套路由）
+  - ✅ 字典管理（系统常用数据字典的维护与查询）
+- ✅ **工程化与服务治理**
+  - ✅ Docker 容器化部署方案（提供 Dockerfile & docker-compose 配置文件）
+  - ✅ 全局错误捕获与统一响应格式封装
+  - ✅ 日志管理与持久化落盘
+  - ✅ 基于 Request Schema 的接口入参校验
